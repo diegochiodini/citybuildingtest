@@ -39,5 +39,19 @@ namespace Game.Controllers
         {
             throw new NotImplementedException();
         }
+
+        protected override void Fire1(float value)
+        {
+            if (value > 0f)
+            {
+                Debug.Log("Fire1");
+
+            }
+        }
+
+        protected override void Fire2(float value)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

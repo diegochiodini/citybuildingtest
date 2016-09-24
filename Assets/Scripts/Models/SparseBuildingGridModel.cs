@@ -54,7 +54,8 @@ namespace Game.Models
             }
         }
 
-        public event Action<int, int, BuildingModel> TileRemovedEvent;
+        public event Action<int, int, BuildingModel> ElementRemoved;
+        public event Action<int, int, BuildingModel> ElementAdded;
 
         public BuildingModel Get(int row, int column)
         {
@@ -81,6 +82,11 @@ namespace Game.Models
             element.Column = column;
             element.Building = data;
             _buildings.Add(element);
+
+            if (ElementAdded != null)
+            {
+                ElementAdded(row, column, data);
+            }
         }
     }
 }

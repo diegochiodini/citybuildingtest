@@ -2,7 +2,8 @@
 {
     public interface IGridModel<T> : IModel
     {
-        event System.Action<int, int, T> TileRemovedEvent;
+        event System.Action<int, int, T> ElementAdded;
+        event System.Action<int, int, T> ElementRemoved;
 
         int Rows { get; }
         int Columns { get; }
