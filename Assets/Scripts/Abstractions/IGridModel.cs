@@ -9,5 +9,6 @@
         int NumberOfTypes { get; }
         int NumberOfTiles { get; }
         T Get(int row, int column);
+        void Set(int row, int column, T data);
     }
 }

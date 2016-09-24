@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game.Models
 {
-    public class GridModel : ScriptableObject, IGridModel<int>
+    public class IntGridModel : ScriptableObject, IGridModel<int>
     {
         public event Action<int, int, int> TileRemovedEvent;
 
@@ -91,6 +91,11 @@ namespace Game.Models
         public int Get(int row, int column)
         {
             return _tiles[IndexOf(row, column)];
+        }
+
+        public void Set(int row, int column, int data)
+        {
+            throw new NotImplementedException();
         }
     }
 }
