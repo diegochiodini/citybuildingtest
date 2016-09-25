@@ -8,7 +8,7 @@ namespace Game.Models
         Common,
     }
 
-    public class BuildingModel :ScriptableObject
+    public class BuildingModel :ScriptableObject, IModel
     {
         public int Id;
         public string Name = "Name";

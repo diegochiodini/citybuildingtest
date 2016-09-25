@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class Locator : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class Locator : MonoBehaviour
         return GetModels<T>().FirstOrDefault();
     }
 
-    public static IEnumerable<T> GetModels<T>() where T : IModel
+    public static T[] GetModels<T>() where T : IModel
     {
         if (_instance._assets == null || _instance._assets.Length == 0)
         {
@@ -33,7 +34,9 @@ public class Locator : MonoBehaviour
             throw new System.Exception(message);
         }
 
-        return results;
+        var array = results.ToArray();
+        Assert.IsNotNull(array, "Failed conversion");
+        return array;
     }
 
     public static void PrintAssets()
