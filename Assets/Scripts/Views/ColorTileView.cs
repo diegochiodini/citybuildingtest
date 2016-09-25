@@ -39,4 +39,10 @@ public class ColorTileView : AbstractTile<BuildingModel>
         Assert.IsNotNull(_category);
         Assert.IsNotNull(_name);
     }
- }
+
+    public override void OnSelect()
+    {
+        Debug.LogFormat(this, "Tile {0} seletect", _model.Name);
+        FireSelectionEvent();
+    }
+}

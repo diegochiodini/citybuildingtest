@@ -15,6 +15,12 @@ public class Locator : MonoBehaviour
         _instance = this;
     }
 
+    //TODO: This is supposed to be a serializable class
+    public static T GetWriteableModel<T>() where T :MonoBehaviour
+    {
+        return _instance.GetComponent<T>();
+    }
+
     public static T GetModel<T>() where T : IModel
     {
         return GetModels<T>().FirstOrDefault();

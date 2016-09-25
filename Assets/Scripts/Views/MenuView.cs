@@ -27,7 +27,16 @@ public class MenuView : MonoBehaviour
     private void Start()
     {
         CreateTiles();
+    }
 
+    private void OnDestroy()
+    {
+        ColorTileView[] tiles = _contentsArea.GetComponentsInChildren<ColorTileView>();
+        foreach (var tile in tiles)
+        {
+            tile.TileSelected -= OnTileSelected;
+            Destroy(tile.gameObject);
+        }
     }
 
     private void CreateTiles()
@@ -38,7 +47,14 @@ public class MenuView : MonoBehaviour
             var tile = Instantiate<ColorTileView>(_tileTemplate);
             tile.transform.SetParent(_contentsArea, false);
             tile.Model = model;
+            tile.TileSelected += OnTileSelected;
         }
+    }
+
+    private void OnTileSelected(BuildingModel buildingModel)
+    {
+        ToggleMenu();
+        Locator.GetWriteableModel<SharedModel>().SelectedBuilding.Value = buildingModel.Id;
     }
 
     public void ToggleMenu()
