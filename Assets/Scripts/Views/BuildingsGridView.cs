@@ -95,7 +95,6 @@ public class BuildingsGridView : MonoBehaviour
     private void SnapSelectedCellOnGrid(Vector3 worldPosition)
     {
         Vector2 coordinates = GetWorldToGridPosition(worldPosition);
-        Debug.Log(coordinates);
         _selectedCell.transform.position = GetGridToWorldPosition((int)coordinates.x, (int)coordinates.y);
     }
     #endregion
