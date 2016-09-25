@@ -2,35 +2,19 @@
 
 namespace Game.Models
 {
-    public enum BuildingType
+    public enum BuildingCategory
     {
-        Unique0,
-        Unique1,
-        Unique2,
-        Unique3,
-        Unique4,
-        Unique5,
-        Unique6,
-        Unique7,
-        Unique8,
-        Unique9,
-        Unique10,
-        Unique11,
-        Unique12,
-        Unique13,
-        Unique14,
-        Common0,
-        Common1,
-        Common2,
-        Common3,
-        Common4,
+        Unique,
+        Common,
     }
 
     public class BuildingModel :ScriptableObject
     {
-        public int Width;
-        public int Height;
-        public BuildingType Type;
+        public int Id;
+        public BuildingCategory Category = BuildingCategory.Unique;
+        public int MaxNumber = 1;
+        public int Width = 1;
+        public int Height = 1;
         public GameObject Mesh;
     }
 }

@@ -50,7 +50,8 @@ namespace Game.Models
         {
             get
             {
-                return Enum.GetValues(typeof(BuildingType)).Length;
+                //return Enum.GetValues(typeof(BuildingType)).Length;
+                return 0;
             }
         }
 
