@@ -15,10 +15,23 @@ public class BuildingsGridView : MonoBehaviour
     private List<RaycastResult> _results = new List<RaycastResult>();
     private SparseBuildingGridModel _model;
 
+    private Vector3 _scaledCell;
+    private Vector3 _scaledOffset;
+
     private void Awake()
     {
         Assert.IsNotNull(_raycaster, "You must specify a raycaster");
         _model = Locator.GetModel<SparseBuildingGridModel>();
+
+        _scaledCell = new Vector3(
+            (_cellSize.x * transform.localScale.x) / _model.Rows,
+            0f,
+            (_cellSize.y * transform.localScale.z) / _model.Columns);
+
+        _scaledOffset = new Vector3(
+            (_cellSize.x / 2f) * transform.localScale.x,
+            0f,
+            (_cellSize.y / 2f) * transform.localScale.z);
     }
 
     public void OnCLick(BaseEventData data)
@@ -27,8 +40,19 @@ public class BuildingsGridView : MonoBehaviour
         _raycaster.Raycast(data as PointerEventData, _results);
         foreach (var hit in _results)
         {
-            Debug.Log(hit.worldPosition);
+            Vector2 coordinates = GetGridCoordinate(hit.worldPosition);
+            Debug.LogFormat("{0}, {1}", (int)coordinates.x, (int)coordinates.y);
         }
+    }
+
+    private Vector2 GetGridCoordinate(Vector3 worldPosition)
+    {
+        Vector2 coordinates = new Vector2();
+
+        Vector3 localPosition = _scaledOffset - (transform.position - worldPosition);
+        coordinates.x = _model.Rows - (localPosition.z / _scaledCell.z);
+        coordinates.y = (localPosition.x / _scaledCell.x);
+        return coordinates;
     }
 
     private void OnDrawGizmos()
