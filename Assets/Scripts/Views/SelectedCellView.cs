@@ -38,11 +38,6 @@ public class SelectedCellView : AbstractSelectionCell<BuildingModel>
         AdjustGraphics();
     }
 
-    private void Start()
-    {
-        gameObject.SetActive(false);
-    }
-
     private void AdjustGraphics()
     {
         float xUnit = 1f;

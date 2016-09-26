@@ -12,10 +12,14 @@ namespace Game.Helpers
         [SerializeField]
         private BuildingsGridView _gridView;
 
+        [SerializeField]
+        private SelectedCellView _landTemplate;
+
         private IGridModel<BuildingModel> _gridModel;
 
         private void Awake()
         {
+            Assert.IsNotNull(_landTemplate);
             Assert.IsNotNull(_gridView);
             _gridView.CreateBuilding = CreateBuilding;
 
@@ -28,6 +32,10 @@ namespace Game.Helpers
             Assert.IsNotNull(building, "Can't create building: " + model.Mesh.name);
 
             building.transform.position = worldPosition;
+
+            SelectedCellView landCell = Instantiate<SelectedCellView>(_landTemplate);
+            landCell.transform.position = worldPosition;
+            landCell.Model = model;
 
             _gridModel.Set((int)gridPosition.x, (int)gridPosition.y, model);
         }
