@@ -10,30 +10,43 @@ public class MenuView : AbstractSelectionMenu<ColorTileView, BuildingModel>
     private RectTransform _contentsArea;
 
     private AbstractToggleMenu _toggleMenu;
+    private IGridModel<BuildingModel> _gridModel;
 
     private void Awake()
     {
         Assert.IsNotNull(ElementTemplate);
         _toggleMenu = GetComponent<AbstractToggleMenu>();
+        _gridModel = Locator.GetModel<IGridModel<BuildingModel>>();
+        _gridModel.ElementAdded += OnElementAdded;
+    }
+
+    private void OnElementAdded(int row, int column, BuildingModel model)
+    {
+        RefreshTiles();
     }
 
     private void Start()
     {
-        CreateTiles();
+        RefreshTiles();
     }
 
     private void OnDestroy()
     {
-        ColorTileView[] tiles = _contentsArea.GetComponentsInChildren<ColorTileView>();
-        foreach (var tile in tiles)
+        _gridModel.ElementAdded -= OnElementAdded;
+
+        foreach (Transform child in _contentsArea.transform)
         {
-            tile.TileSelected -= OnItemSelected;
-            Destroy(tile.gameObject);
+            Destroy(child.gameObject);
         }
     }
 
-    private void CreateTiles()
+    private void RefreshTiles()
     {
+        foreach (Transform child in _contentsArea.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
         BuildingModel[] models = Locator.GetModels<BuildingModel>();
         foreach (var model in models)
         {

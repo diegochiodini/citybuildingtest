@@ -22,7 +22,7 @@ public class BuildingsGridView : MonoBehaviour
     private float _mouseSensivity = 1f;
 
     private List<RaycastResult> _results = new List<RaycastResult>();
-    private SparseBuildingGridModel _gridModel;
+    private IGridModel<BuildingModel> _gridModel;
     private SharedModel _sharedModel;
     private SelectedCell _selectedCell;
 
@@ -43,7 +43,7 @@ public class BuildingsGridView : MonoBehaviour
         _sharedModel = Locator.GetWriteableModel<SharedModel>();
         _sharedModel.SelectedBuilding.OnChange += OnSelectedBuildingChange;
 
-        _gridModel = Locator.GetModel<SparseBuildingGridModel>();
+        _gridModel = Locator.GetModel<IGridModel<BuildingModel>>();
 
         _scaledCell = new Vector3(
             (_cellSize.x * transform.localScale.x) / _gridModel.Rows,

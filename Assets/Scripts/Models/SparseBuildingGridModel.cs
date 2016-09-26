@@ -2,16 +2,11 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
+using GridElement = Game.Abstractions.GridElement<Game.Models.BuildingModel>;
 
 namespace Game.Models
 {
-    public struct GridElement
-    {
-        public int Row;
-        public int Column;
-        public BuildingModel Building;
-    }
-
     public class SparseBuildingGridModel : ScriptableObject, IGridModel<BuildingModel>
     {
         [SerializeField]
@@ -50,8 +45,7 @@ namespace Game.Models
         {
             get
             {
-                //return Enum.GetValues(typeof(BuildingType)).Length;
-                return 0;
+                throw new System.NotImplementedException();
             }
         }
 
@@ -63,7 +57,7 @@ namespace Game.Models
             try
             {
                 var found = _buildings.Find((building) => building.Row == row && building.Column == column);
-                return found.Building;
+                return found.Element;
             }
             catch (Exception)
             {
@@ -78,16 +72,23 @@ namespace Game.Models
 
         public void Set(int row, int column, BuildingModel data)
         {
-            GridElement element;
+            Assert.IsNotNull(data);
+            GridElement element = new GridElement();
             element.Row = row;
             element.Column = column;
-            element.Building = data;
+            element.Element = data;
             _buildings.Add(element);
 
             if (ElementAdded != null)
             {
                 ElementAdded(row, column, data);
             }
+        }
+
+        public GridElement<BuildingModel>[] FindAll(BuildingModel element)
+        {
+            var found = _buildings.FindAll((e) => e.Element.Id == element.Id);
+            return found.ToArray();
         }
     }
 }

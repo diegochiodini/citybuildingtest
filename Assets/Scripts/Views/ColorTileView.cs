@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Game.Models;
 using UnityEngine.Assertions;
 
+[RequireComponent(typeof(Button))]
 public class ColorTileView : AbstractTile<BuildingModel>
 {
     [SerializeField]
@@ -15,6 +16,8 @@ public class ColorTileView : AbstractTile<BuildingModel>
 
     [SerializeField]
     private Text _name;
+
+    private IGridModel<BuildingModel> _gridModel;
 
     private BuildingModel _model;
     public override BuildingModel Model
@@ -30,6 +33,11 @@ public class ColorTileView : AbstractTile<BuildingModel>
             _image.color = _model.Color;
             _category.text = _model.Category.ToString();
             _name.text = _model.Name;
+            if (_gridModel.FindAll(_model).Length >= _model.MaxNumber)
+            {
+                Button button = GetComponent<Button>();
+                button.interactable = false;
+            }
         }
     }
 
@@ -38,6 +46,8 @@ public class ColorTileView : AbstractTile<BuildingModel>
         Assert.IsNotNull(_image);
         Assert.IsNotNull(_category);
         Assert.IsNotNull(_name);
+
+        _gridModel = Locator.GetModel<IGridModel<BuildingModel>>();
     }
 
     public override void OnSelect()
