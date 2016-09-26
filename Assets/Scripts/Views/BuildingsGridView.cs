@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
+using Game.Abstractions;
+using SelectedCell = Game.Abstractions.AbstractSelectionCell<Game.Models.BuildingModel>;
 
 public class BuildingsGridView : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _selectedCell;
+    private  GameObject _selectedCellObject;
 
     [SerializeField]
     private Vector2 _cellSize;
@@ -21,6 +23,7 @@ public class BuildingsGridView : MonoBehaviour
     private List<RaycastResult> _results = new List<RaycastResult>();
     private SparseBuildingGridModel _gridModel;
     private SharedModel _sharedModel;
+    private SelectedCell _selectedCell;
 
     private Vector3 _scaledCell;
     private Vector3 _scaledOffset;
@@ -30,9 +33,9 @@ public class BuildingsGridView : MonoBehaviour
     private void Awake()
     {
         Assert.IsNotNull(_raycaster, "You must specify a raycaster");
-        Assert.IsNotNull(_selectedCell, "You must provide an object to highlight the landing place of the building");
+        Assert.IsNotNull(_selectedCellObject, "You must provide an object to highlight the landing place of the building");
 
-        _selectedCell.SetActive(false);
+        _selectedCell = _selectedCellObject.GetComponent<SelectedCell>();
 
         _sharedModel = Locator.GetWriteableModel<SharedModel>();
         _sharedModel.SelectedBuilding.OnChange += OnSelectedBuildingChange;
@@ -52,7 +55,7 @@ public class BuildingsGridView : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_sharedModel.SelectedBuilding.Value == int.MinValue)
+        if (_sharedModel.SelectedBuilding.Value == null)
         {
             return;
         }
@@ -109,23 +112,14 @@ public class BuildingsGridView : MonoBehaviour
         {
             Vector2 coordinates = GetWorldToGridPosition(hit.worldPosition);
             Debug.LogFormat("{0}, {1}", (int)coordinates.x, (int)coordinates.y);
-            _sharedModel.SelectedBuilding.Value = int.MinValue;
+            _sharedModel.SelectedBuilding.Value = null;
         }
     }
 
-    private void OnSelectedBuildingChange(int id)
+    private void OnSelectedBuildingChange(BuildingModel model)
     {
         Debug.Log("SelectedBuilding has changed: " + _sharedModel.SelectedBuilding.Value);
-        if (id >= 0)
-        {
-            _selectedCell.SetActive(true);
-
-        }
-        else
-        {
-            _selectedCell.SetActive(false);
-        }
-
+        _selectedCell.Model = model;
     }
     #endregion
 

@@ -47,6 +47,6 @@ public class MenuView : AbstractSelectionMenu<ColorTileView, BuildingModel>
     protected override void OnItemSelected(BuildingModel data)
     {
         _toggleMenu.ToggleMenu();
-        Locator.GetWriteableModel<SharedModel>().SelectedBuilding.Value = data.Id;
+        Locator.GetWriteableModel<SharedModel>().SelectedBuilding.Value = data;
     }
 }

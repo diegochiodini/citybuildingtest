@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Game.Models;
+using UnityEngine;
 
 public class SharedModel : MonoBehaviour
 {
-    public Observable<int> SelectedBuilding = new Observable<int>(int.MinValue);
+    public Observable<BuildingModel> SelectedBuilding = new Observable<BuildingModel>(null);
 }
