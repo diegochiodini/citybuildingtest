@@ -89,8 +89,19 @@ public class BuildingsGridView : MonoBehaviour
     {
         Vector3 coordinates = Vector3.zero;
 
-        coordinates.x = (column * _scaledCell.x) - _scaledOffset.x + (_scaledCell.x * 0.5f);
-        coordinates.z = (-row * _scaledCell.z) + _scaledOffset.z - (_scaledCell.z * 0.5f);
+        coordinates.x = (column * _scaledCell.x) - _scaledOffset.x;
+        coordinates.z = (-row * _scaledCell.z) + _scaledOffset.z;
+
+        float xUnit = 1f;
+        float zUnit = 1f;
+        BuildingModel building = _sharedModel.SelectedBuilding.Value;
+        if (building != null)
+        {
+            xUnit = building.Width;
+            zUnit = building.Height;
+        }
+        Vector3 unitOffset = new Vector3(xUnit * _scaledCell.x * 0.5f, 0f, -zUnit * _scaledCell.z * 0.5f);
+        coordinates += unitOffset;
 
         return coordinates;
     }
@@ -122,39 +133,4 @@ public class BuildingsGridView : MonoBehaviour
         _selectedCell.Model = model;
     }
     #endregion
-
-    #region Editor
-
-    private void OnDrawGizmos()
-    {
-        int rows = 20; int columns = 20;
-        Gizmos.color = Color.red;
-        Vector3 scaledSize = new Vector3(
-            (_cellSize.x * transform.localScale.x) / rows,
-            0f,
-            (_cellSize.y * transform.localScale.z) / columns);
-
-        Vector3 offset = new Vector3(
-            (_cellSize.x / 2f) * transform.localScale.x,
-            0f,
-            (_cellSize.y / 2f) * transform.localScale.z);
-
-        for (int i = 0; i < rows + 1; i++) //rows
-        {
-            float zRow = i * scaledSize.z - offset.z;
-            Vector3 startRow = new Vector3(-offset.x, 0f, zRow);
-            Vector3 endRow = new Vector3(offset.x, 0f, zRow);
-            Gizmos.DrawLine(startRow, endRow);
-
-            for (int j = 0; j < columns + 1; j++) //columns
-            {
-                float xCol = j * scaledSize.x - offset.x;
-                Vector3 startCol = new Vector3(xCol, 0f, -offset.z);
-                Vector3 endCol = new Vector3(xCol, 0f, offset.z);
-                Gizmos.DrawLine(startCol, endCol);
-            }
-        }
-    }
-
-    #endregion Editor
 }
