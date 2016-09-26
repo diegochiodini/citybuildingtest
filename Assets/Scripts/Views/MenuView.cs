@@ -1,27 +1,20 @@
-﻿using System;
-using DG.Tweening;
+﻿using Game.Abstractions;
+using Game.Models;
 using UnityEngine;
 using UnityEngine.Assertions;
-using Game.Models;
 
-public class MenuView : MonoBehaviour
+[RequireComponent(typeof(AbstractToggleMenu))]
+public class MenuView : AbstractSelectionMenu<ColorTileView, BuildingModel>
 {
-    [SerializeField]
-    private ColorTileView _tileTemplate;
-
-    [SerializeField]
-    private RectTransform _scrollableArea;
-
     [SerializeField]
     private RectTransform _contentsArea;
 
-    private bool _isOpen = false;
+    private AbstractToggleMenu _toggleMenu;
 
     private void Awake()
     {
-        Assert.IsNotNull(_tileTemplate);
-        Assert.IsNotNull(_scrollableArea);
-
+        Assert.IsNotNull(ElementTemplate);
+        _toggleMenu = GetComponent<AbstractToggleMenu>();
     }
 
     private void Start()
@@ -34,7 +27,7 @@ public class MenuView : MonoBehaviour
         ColorTileView[] tiles = _contentsArea.GetComponentsInChildren<ColorTileView>();
         foreach (var tile in tiles)
         {
-            tile.TileSelected -= OnTileSelected;
+            tile.TileSelected -= OnItemSelected;
             Destroy(tile.gameObject);
         }
     }
@@ -44,22 +37,16 @@ public class MenuView : MonoBehaviour
         BuildingModel[] models = Locator.GetModels<BuildingModel>();
         foreach (var model in models)
         {
-            var tile = Instantiate<ColorTileView>(_tileTemplate);
+            var tile = Instantiate<ColorTileView>(ElementTemplate);
             tile.transform.SetParent(_contentsArea, false);
             tile.Model = model;
-            tile.TileSelected += OnTileSelected;
+            tile.TileSelected += OnItemSelected;
         }
     }
 
-    private void OnTileSelected(BuildingModel buildingModel)
+    protected override void OnItemSelected(BuildingModel data)
     {
-        ToggleMenu();
-        Locator.GetWriteableModel<SharedModel>().SelectedBuilding.Value = buildingModel.Id;
-    }
-
-    public void ToggleMenu()
-    {
-        transform.DOLocalMoveY(_isOpen ? 0f : _scrollableArea.rect.height, 0.15f);
-        _isOpen = !_isOpen;
+        _toggleMenu.ToggleMenu();
+        Locator.GetWriteableModel<SharedModel>().SelectedBuilding.Value = data.Id;
     }
 }
