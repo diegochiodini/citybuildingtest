@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 using Game.Abstractions;
+
 using SelectedCell = Game.Abstractions.AbstractSelectionCell<Game.Models.BuildingModel>;
 
 public class BuildingsGridView : MonoBehaviour
@@ -28,6 +29,8 @@ public class BuildingsGridView : MonoBehaviour
     private Vector3 _scaledCell;
     private Vector3 _scaledOffset;
     private Vector3 _lastMousePosition;
+
+    public System.Action<BuildingModel, Vector2, Vector3> CreateBuilding;
 
     #region Life cycle
     private void Awake()
@@ -122,8 +125,13 @@ public class BuildingsGridView : MonoBehaviour
         foreach (var hit in _results)
         {
             Vector2 coordinates = GetWorldToGridPosition(hit.worldPosition);
-            Debug.LogFormat("{0}, {1}", (int)coordinates.x, (int)coordinates.y);
+            BuildingModel buildingModel = _sharedModel.SelectedBuilding.Value;
+            if (CreateBuilding != null)
+            {
+                CreateBuilding(buildingModel, coordinates, _selectedCell.transform.position);
+            }
             _sharedModel.SelectedBuilding.Value = null;
+            Debug.LogFormat("{0}, {1}", (int)coordinates.x, (int)coordinates.y);
         }
     }
 

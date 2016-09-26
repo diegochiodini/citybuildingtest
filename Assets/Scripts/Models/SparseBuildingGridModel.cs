@@ -71,7 +71,7 @@ namespace Game.Models
             }
         }
 
-        private void Awake()
+        private void OnEnable()
         {
             _buildings = new List<GridElement>();
         }
