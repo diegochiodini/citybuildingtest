@@ -1,21 +1,32 @@
 ﻿using Game.Abstractions;
+using Game.Helpers;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
-using GridElement = Game.Abstractions.GridElement<Game.Models.BuildingModel>;
 
 namespace Game.Models
 {
+    [System.Serializable]
+    class BuildingElement : GridElement<BuildingModel> { }
+
+    [System.Serializable]
+    class BuildingList : Serializer<List<BuildingElement>>
+    {
+        public BuildingList(string path) : base(path, new List<BuildingElement>()) { }
+    }
+
     public class SparseBuildingGridModel : ScriptableObject, IGridModel<BuildingModel>
     {
+        private const string SavingFile = "buildings.json";
+
         [SerializeField]
         private int _rows;
 
         [SerializeField]
         private int _columns;
 
-        private List<GridElement> _buildings;
+        private BuildingList _buildings;
 
         public int Rows
         {
@@ -37,7 +48,7 @@ namespace Game.Models
         {
             get
             {
-                return _buildings.Count;
+                return _buildings.Value.Count;
             }
         }
 
@@ -56,7 +67,7 @@ namespace Game.Models
         {
             try
             {
-                var found = _buildings.Find((building) => building.Row == row && building.Column == column);
+                var found = _buildings.Value.Find((building) => building.Row == row && building.Column == column);
                 return found.Element;
             }
             catch (Exception)
@@ -67,27 +78,30 @@ namespace Game.Models
 
         private void OnEnable()
         {
-            _buildings = new List<GridElement>();
+            string path = Application.persistentDataPath + "/" + SavingFile;
+            _buildings = new BuildingList(path);
         }
 
         public void Set(int row, int column, BuildingModel data)
         {
             Assert.IsNotNull(data);
-            GridElement element = new GridElement();
+            BuildingElement element = new BuildingElement();
             element.Row = row;
             element.Column = column;
             element.Element = data;
-            _buildings.Add(element);
+            _buildings.Value.Add(element);
 
             if (ElementAdded != null)
             {
                 ElementAdded(row, column, data);
             }
+
+            _buildings.Save();
         }
 
         public GridElement<BuildingModel>[] FindAll(BuildingModel element)
         {
-            var found = _buildings.FindAll((e) => e.Element.Id == element.Id);
+            var found = _buildings.Value.FindAll((e) => e.Element.Id == element.Id);
             return found.ToArray();
         }
     }
