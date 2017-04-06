@@ -3,9 +3,9 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public class Locator : MonoBehaviour
+public class ModelLocator : MonoBehaviour
 {
-    private static Locator _instance;
+    private static ModelLocator _instance;
 
     [SerializeField]
     private ScriptableObject[] _assets = null;
@@ -15,13 +15,13 @@ public class Locator : MonoBehaviour
         _instance = this;
     }
 
-    //TODO: This is supposed to be a serializable class
+    //TODO: The type T is supposed to be a serializable class
     public static T GetWriteableModel<T>() where T :MonoBehaviour
     {
         return _instance.GetComponent<T>();
     }
 
-    public static T GetModel<T>() where T : IModel
+    public static T Get<T>() where T : IModel
     {
         return GetModels<T>().FirstOrDefault();
     }

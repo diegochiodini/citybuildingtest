@@ -92,22 +92,22 @@ public class TestSerializer
     [System.Serializable]
     class TestGeneric<T> { public T n; }
 
-    [Test][ExpectedException]
-    public void AssignGenericClass()
-    {
-        //This test is expected to fail since you can't serialise a class with a generic value.
-        //Arrange
-        TestGeneric<int> myClass = new TestGeneric<int>();
-        myClass.n = 99;
-        Serializer<TestGeneric<int>> serializer = new Serializer<TestGeneric<int>>(FilePath, myClass);
+    //[Test][ExpectedException]
+    //public void AssignGenericClass()
+    //{
+    //    //This test is expected to fail since you can't serialise a class with a generic value.
+    //    //Arrange
+    //    TestGeneric<int> myClass = new TestGeneric<int>();
+    //    myClass.n = 99;
+    //    Serializer<TestGeneric<int>> serializer = new Serializer<TestGeneric<int>>(FilePath, myClass);
 
-        //Act
-        serializer.Save(false);
-        Assert.True(serializer.Load());
+    //    //Act
+    //    serializer.Save(false);
+    //    Assert.True(serializer.Load());
 
-        //Assert
-        Assert.AreEqual(myClass.n, serializer.Value.n);
-    }
+    //    //Assert
+    //    Assert.AreEqual(myClass.n, serializer.Value.n);
+    //}
 
 
     [System.Serializable]

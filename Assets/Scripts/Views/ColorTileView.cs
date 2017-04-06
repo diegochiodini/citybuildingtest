@@ -47,7 +47,7 @@ public class ColorTileView : AbstractTile<BuildingModel>
         Assert.IsNotNull(_category);
         Assert.IsNotNull(_name);
 
-        _gridModel = Locator.GetModel<IGridModel<BuildingModel>>();
+        _gridModel = ModelLocator.Get<IGridModel<BuildingModel>>();
     }
 
     public override void OnSelect()

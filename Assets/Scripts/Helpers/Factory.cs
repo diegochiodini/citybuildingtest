@@ -23,7 +23,7 @@ namespace Game.Helpers
             Assert.IsNotNull(_gridView);
             _gridView.CreateBuilding = CreateBuilding;
 
-            _gridModel = Locator.GetModel<GridModel>();
+            _gridModel = ModelLocator.Get<GridModel>();
         }
 
         public void CreateBuilding(BuildingModel model, Vector2 gridPosition, Vector3 worldPosition)

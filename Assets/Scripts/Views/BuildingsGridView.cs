@@ -23,7 +23,7 @@ public class BuildingsGridView : MonoBehaviour
 
     private List<RaycastResult> _results = new List<RaycastResult>();
     private IGridModel<BuildingModel> _gridModel;
-    private SharedModel _sharedModel;
+    private SharedDataModel _sharedData;
     private SelectedCell _selectedCell;
 
     private Vector3 _scaledCell;
@@ -40,10 +40,10 @@ public class BuildingsGridView : MonoBehaviour
 
         _selectedCell = _selectedCellObject.GetComponent<SelectedCell>();
 
-        _sharedModel = Locator.GetWriteableModel<SharedModel>();
-        _sharedModel.SelectedBuilding.OnChange += OnSelectedBuildingChange;
+        _sharedData = ModelLocator.GetWriteableModel<SharedDataModel>();
+        _sharedData.SelectedBuilding.OnChange += OnSelectedBuildingChange;
 
-        _gridModel = Locator.GetModel<IGridModel<BuildingModel>>();
+        _gridModel = ModelLocator.Get<IGridModel<BuildingModel>>();
 
         _scaledCell = new Vector3(
             (_cellSize.x * transform.localScale.x) / _gridModel.Rows,
@@ -58,7 +58,7 @@ public class BuildingsGridView : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_sharedModel.SelectedBuilding.Value == null)
+        if (_sharedData.SelectedBuilding.Value == null)
         {
             return;
         }
@@ -97,7 +97,7 @@ public class BuildingsGridView : MonoBehaviour
 
         float xUnit = 1f;
         float zUnit = 1f;
-        BuildingModel building = _sharedModel.SelectedBuilding.Value;
+        BuildingModel building = _sharedData.SelectedBuilding.Value;
         if (building != null)
         {
             xUnit = building.Width;
@@ -118,6 +118,7 @@ public class BuildingsGridView : MonoBehaviour
 
     #region Events
 
+    //This is a good example to highlight the difference between prototype and production code. See object Root/Grid.
     public void OnCLick(BaseEventData data)
     {
         _results.Clear();
@@ -125,19 +126,19 @@ public class BuildingsGridView : MonoBehaviour
         foreach (var hit in _results)
         {
             Vector2 coordinates = GetWorldToGridPosition(hit.worldPosition);
-            BuildingModel buildingModel = _sharedModel.SelectedBuilding.Value;
+            BuildingModel buildingModel = _sharedData.SelectedBuilding.Value;
             if (CreateBuilding != null)
             {
                 CreateBuilding(buildingModel, coordinates, _selectedCell.transform.position);
             }
-            _sharedModel.SelectedBuilding.Value = null;
+            _sharedData.SelectedBuilding.Value = null;
             Debug.LogFormat("{0}, {1}", (int)coordinates.x, (int)coordinates.y);
         }
     }
 
     private void OnSelectedBuildingChange(BuildingModel model)
     {
-        Debug.Log("SelectedBuilding has changed: " + _sharedModel.SelectedBuilding.Value);
+        Debug.Log("SelectedBuilding has changed: " + _sharedData.SelectedBuilding.Value);
         _selectedCell.Model = model;
     }
     #endregion

@@ -1,21 +1,10 @@
 ﻿using Game.Abstractions;
-using Game.Helpers;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
 namespace Game.Models
 {
-    [System.Serializable]
-    class BuildingElement : GridElement<BuildingModel> { }
-
-    [System.Serializable]
-    class BuildingList : Serializer<List<BuildingElement>>
-    {
-        public BuildingList(string path) : base(path, new List<BuildingElement>()) { }
-    }
-
     public class SparseBuildingGridModel : ScriptableObject, IGridModel<BuildingModel>
     {
         private const string SavingFile = "buildings.json";
@@ -65,15 +54,9 @@ namespace Game.Models
 
         public BuildingModel Get(int row, int column)
         {
-            try
-            {
-                var found = _buildings.Value.Find((building) => building.Row == row && building.Column == column);
-                return found.Element;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            var found = _buildings.Value.Find((building) => building.Row == row && building.Column == column);
+            Assert.IsNotNull(found, String.Format("Grid element [{0} : {1}] not found", row, column));
+            return found.Element;
         }
 
         private void OnEnable()
