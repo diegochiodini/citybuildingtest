@@ -23,7 +23,9 @@ namespace Game.Helpers
             Assert.IsNotNull(_gridView);
             _gridView.CreateBuilding = CreateBuilding;
 
-            _gridModel = ModelLocator.Get<GridModel>();
+            //A model could also be specified directly as ScriptableObject variable of a Monobehaviour. 
+            //Just remember to cast it to the right interface.
+            _gridModel = SharedModels.Get<GridModel>();
         }
 
         public void CreateBuilding(BuildingModel model, Vector2 gridPosition, Vector3 worldPosition)
@@ -33,8 +35,7 @@ namespace Game.Helpers
 
             building.transform.position = worldPosition;
 
-            SelectedCellView landCell = Instantiate<SelectedCellView>(_landTemplate);
-            landCell.transform.position = worldPosition;
+            SelectedCellView landCell = Instantiate<SelectedCellView>(_landTemplate, building.transform);
             landCell.Model = model;
 
             _gridModel.Set((int)gridPosition.x, (int)gridPosition.y, model);

@@ -40,10 +40,10 @@ public class BuildingsGridView : MonoBehaviour
 
         _selectedCell = _selectedCellObject.GetComponent<SelectedCell>();
 
-        _sharedData = ModelLocator.GetWriteableModel<SharedDataModel>();
+        _sharedData = SharedModels.GetWriteableModel<SharedDataModel>();
         _sharedData.SelectedBuilding.OnChange += OnSelectedBuildingChange;
 
-        _gridModel = ModelLocator.Get<IGridModel<BuildingModel>>();
+        _gridModel = SharedModels.Get<IGridModel<BuildingModel>>();
 
         _scaledCell = new Vector3(
             (_cellSize.x * transform.localScale.x) / _gridModel.Rows,

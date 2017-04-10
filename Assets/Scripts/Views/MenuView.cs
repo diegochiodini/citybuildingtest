@@ -16,7 +16,7 @@ public class MenuView : AbstractSelectionMenu<ColorTileView, BuildingModel>
     {
         Assert.IsNotNull(ElementTemplate);
         _toggleMenu = GetComponent<AbstractToggleMenu>();
-        _gridModel = ModelLocator.Get<IGridModel<BuildingModel>>();
+        _gridModel = SharedModels.Get<IGridModel<BuildingModel>>();
         _gridModel.ElementAdded += OnElementAdded;
     }
 
@@ -47,7 +47,7 @@ public class MenuView : AbstractSelectionMenu<ColorTileView, BuildingModel>
             Destroy(child.gameObject);
         }
 
-        BuildingModel[] models = ModelLocator.GetModels<BuildingModel>();
+        BuildingModel[] models = SharedModels.GetModels<BuildingModel>();
         foreach (var model in models)
         {
             var tile = Instantiate<ColorTileView>(ElementTemplate);
@@ -60,6 +60,6 @@ public class MenuView : AbstractSelectionMenu<ColorTileView, BuildingModel>
     protected override void OnItemSelected(BuildingModel data)
     {
         _toggleMenu.ToggleMenu();
-        ModelLocator.GetWriteableModel<SharedDataModel>().SelectedBuilding.Value = data;
+        SharedModels.GetWriteableModel<SharedDataModel>().SelectedBuilding.Value = data;
     }
 }
