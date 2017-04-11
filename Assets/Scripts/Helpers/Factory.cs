@@ -30,7 +30,7 @@ namespace Game.Helpers
 
         public void CreateBuilding(BuildingModel model, Vector2 gridPosition, Vector3 worldPosition)
         {
-            GameObject building = Instantiate(model.Mesh, transform) as GameObject;
+            GameObject building = Instantiate(model.Mesh, transform);
             Assert.IsNotNull(building, "Can't create building: " + model.Mesh.name);
 
             building.transform.position = worldPosition;

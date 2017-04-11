@@ -7,8 +7,10 @@ namespace Game.Abstractions
         where TData :Object
     {
         [SerializeField]
-        protected TElement ElementTemplate;
+        protected GameObject ElementTemplate;
 
-        protected abstract void OnItemSelected(TData data);
+        protected TElement ElementBehaviour;
+
+        //protected abstract void OnItemSelected(ITile tile);
     } 
 }

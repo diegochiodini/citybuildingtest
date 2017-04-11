@@ -3,13 +3,13 @@ using Game.Abstractions;
 using DG.Tweening;
 using UnityEngine.Assertions;
 
-public class MenuToggleView : AbstractToggleMenu
+public class MenuToggleView : MonoBehaviour, IToggleMenu
 {
     [SerializeField]
-    private RectTransform _scrollableArea;
+    private RectTransform _contentArea;
 
     private bool _isOpen = false;
-    public override bool IsOpen
+    public bool IsOpen
     {
         get
         {
@@ -19,12 +19,12 @@ public class MenuToggleView : AbstractToggleMenu
 
     private void Awake()
     {
-        Assert.IsNotNull(_scrollableArea);
+        Assert.IsNotNull(_contentArea);
     }
 
-    public override void ToggleMenu()
+    public void ToggleMenu()
     {
-        transform.DOLocalMoveY(_isOpen ? 0f : _scrollableArea.rect.height, 0.15f);
+        transform.DOLocalMoveY(_isOpen ? 0f : _contentArea.rect.height, 0.15f);
         _isOpen = !_isOpen;
     }
 }
