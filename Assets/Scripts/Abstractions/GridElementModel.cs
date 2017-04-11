@@ -1,6 +1,6 @@
 ﻿namespace Game.Abstractions
 {
-    public class GridElement<T>
+    public class GridElementModel<T>
     {
         public int Row;
         public int Column;
@@ -8,7 +8,7 @@
 
         public override bool Equals(System.Object obj)
         {
-            GridElement<T> element = obj as GridElement<T>;
+            GridElementModel<T> element = obj as GridElementModel<T>;
             if (element == null)
             {
                 return false;
@@ -16,7 +16,7 @@
             return AreEqual(element);
         }
 
-        public bool Equals(GridElement<T> element)
+        public bool Equals(GridElementModel<T> element)
         {
             if (element == null)
             {
@@ -26,7 +26,7 @@
             return AreEqual(element);
         }
 
-        private bool AreEqual(GridElement<T> element)
+        private bool AreEqual(GridElementModel<T> element)
         {
             bool hasSamePosition = this.Column == element.Column && this.Row == element.Row;
 

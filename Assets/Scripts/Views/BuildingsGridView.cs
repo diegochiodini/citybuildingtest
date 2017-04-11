@@ -5,8 +5,6 @@ using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 using Game.Abstractions;
 
-using SelectedCell = Game.Abstractions.AbstractSelectionCell<Game.Models.BuildingModel>;
-
 public class BuildingsGridView : MonoBehaviour
 {
     [SerializeField]
@@ -24,7 +22,7 @@ public class BuildingsGridView : MonoBehaviour
     private List<RaycastResult> _results = new List<RaycastResult>();
     private IGridModel<BuildingModel> _gridModel;
     private SharedDataModel _sharedData;
-    private SelectedCell _selectedCell;
+    private SelectedCellView _selectedCell;
 
     private Vector3 _scaledCell;
     private Vector3 _scaledOffset;
@@ -38,7 +36,7 @@ public class BuildingsGridView : MonoBehaviour
         Assert.IsNotNull(_raycaster, "You must specify a raycaster");
         Assert.IsNotNull(_selectedCellObject, "You must provide an object to highlight the landing place of the building");
 
-        _selectedCell = _selectedCellObject.GetComponent<SelectedCell>();
+        _selectedCell = _selectedCellObject.GetComponent<SelectedCellView>();
 
         _sharedData = SharedModels.GetWriteableModel<SharedDataModel>();
         _sharedData.SelectedBuilding.OnChange += OnSelectedBuildingChange;

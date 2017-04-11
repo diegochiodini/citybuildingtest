@@ -1,6 +1,6 @@
 ﻿namespace Game.Abstractions
 {
-    public interface IToggleMenu
+    public interface IToggleMenuView
     {
         bool IsOpen { get; }
 

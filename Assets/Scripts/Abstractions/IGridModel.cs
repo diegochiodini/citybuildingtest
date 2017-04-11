@@ -10,7 +10,7 @@
         int NumberOfTypes { get; }
         int NumberOfTiles { get; }
         T Get(int row, int column);
-        GridElement<T>[] FindAll(T element);
+        GridElementModel<T>[] FindAll(T element);
         void Set(int row, int column, T data);
     }
 }

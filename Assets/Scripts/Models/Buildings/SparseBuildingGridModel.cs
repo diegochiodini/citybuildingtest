@@ -82,7 +82,7 @@ namespace Game.Models
             _buildings.Save();
         }
 
-        public GridElement<BuildingModel>[] FindAll(BuildingModel element)
+        public GridElementModel<BuildingModel>[] FindAll(BuildingModel element)
         {
             var found = _buildings.Value.FindAll((e) => e.Element.Id == element.Id);
             return found.ToArray();

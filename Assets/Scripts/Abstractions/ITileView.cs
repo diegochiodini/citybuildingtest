@@ -2,10 +2,10 @@
 
 namespace Game.Abstractions
 {
-    public interface ITile
+    public interface ITileView
     {
-        event System.Action<ITile, GameObject> TileSelectedEvent;
-        event System.Action<ITile, GameObject> TileEnableEvent;
+        event System.Action<ITileView, GameObject> TileSelectedEvent;
+        event System.Action<ITileView, GameObject> TileEnableEvent;
 
         IModel ContentModel { get; set; }
 

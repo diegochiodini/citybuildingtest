@@ -6,7 +6,7 @@ using Game.Models;
 using UnityEngine.Assertions;
 
 [RequireComponent(typeof(Button))]
-public class TileView : MonoBehaviour, ITile
+public class TileView : MonoBehaviour, ITileView
 {
     [SerializeField]
     private Image _image;
@@ -23,8 +23,8 @@ public class TileView : MonoBehaviour, ITile
     private Button _button;
 
 #region ITile
-    public event Action<ITile, GameObject> TileSelectedEvent;
-    public event Action<ITile, GameObject> TileEnableEvent;
+    public event Action<ITileView, GameObject> TileSelectedEvent;
+    public event Action<ITileView, GameObject> TileEnableEvent;
 
     private BuildingModel _model;
     public IModel ContentModel

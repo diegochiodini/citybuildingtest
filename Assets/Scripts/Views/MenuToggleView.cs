@@ -3,7 +3,7 @@ using Game.Abstractions;
 using DG.Tweening;
 using UnityEngine.Assertions;
 
-public class MenuToggleView : MonoBehaviour, IToggleMenu
+public class MenuToggleView : MonoBehaviour, IToggleMenuView
 {
     [SerializeField]
     private RectTransform _contentArea;

@@ -132,7 +132,7 @@ public class TestSerializer
     }
 
     [System.Serializable]
-    class GElement : GridElement<BuildingModel> { }
+    class GElement : GridElementModel<BuildingModel> { }
 
     [System.Serializable]
     class TestBuildingList : Serializer<List<GElement>>

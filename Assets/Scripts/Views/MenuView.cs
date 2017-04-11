@@ -3,19 +3,32 @@ using Game.Models;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-[RequireComponent(typeof(IToggleMenu))]
-public class MenuView : AbstractSelectionMenu<TileView, BuildingModel>
+[RequireComponent(typeof(IToggleMenuView))]
+public class MenuView : MonoBehaviour, ISelectionMenuView
 {
     [SerializeField]
     private RectTransform _contentArea;
 
-    private IToggleMenu _toggleMenu;
+    [SerializeField]
+    protected GameObject ElementTemplate;
+    protected TileView ElementBehaviour;
+
+    private IToggleMenuView _toggleMenu;
     private IGridModel<BuildingModel> _gridModel;
+
+    private ITileView _currentTile;
+    public ITileView CurrentElement
+    {
+        get
+        {
+            return _currentTile;
+        }
+    }
 
     private void Awake()
     {
         Assert.IsNotNull(ElementTemplate);
-        _toggleMenu = GetComponent<IToggleMenu>();
+        _toggleMenu = GetComponent<IToggleMenuView>();
         _gridModel = SharedModels.Get<IGridModel<BuildingModel>>();
         _gridModel.ElementAdded += OnElementAdded;
     }
@@ -56,7 +69,7 @@ public class MenuView : AbstractSelectionMenu<TileView, BuildingModel>
             tile.transform.SetParent(_contentArea, false);
             tile.ContentModel = model;
             tile.TileSelectedEvent += OnItemSelected;
-            tile.TileEnableEvent += (itile, go) => Debug.Log(go.name + " enabled: " + itile.IsEnabled);
+            //tile.TileEnableEvent += (itile, go) => Debug.Log(go.name + " enabled: " + itile.IsEnabled);
             tile.AvailabilityDelegate = (tileModel) =>
             {
                 BuildingModel buildingModel = tileModel as BuildingModel;
@@ -66,8 +79,9 @@ public class MenuView : AbstractSelectionMenu<TileView, BuildingModel>
         }
     }
 
-    protected void OnItemSelected(ITile tile, GameObject tileGameObject)
+    public void OnItemSelected(ITileView tile, GameObject tileGameObject)
     {
+        _currentTile = tile;
         BuildingModel data = tile.ContentModel as BuildingModel;
         _toggleMenu.ToggleMenu();
         SharedModels.GetWriteableModel<SharedDataModel>().SelectedBuilding.Value = data;

@@ -3,5 +3,5 @@
 namespace Game.Models
 {
     [System.Serializable]
-    class BuildingElement : GridElement<BuildingModel> { } 
+    class BuildingElement : GridElementModel<BuildingModel> { } 
 }

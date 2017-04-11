@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
-using Game.Abstractions;
 using Game.Models;
-using System;
 
-public class SelectedCellView : AbstractSelectionCell<BuildingModel>
+public class SelectedCellView : MonoBehaviour
 {
     [SerializeField]
     private float _cellSize;
 
-    public override BuildingModel Model
+    protected BuildingModel ModelCache;
+
+    public BuildingModel Model
     {
         get
         {
